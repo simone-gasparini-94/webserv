@@ -16,4 +16,7 @@ void checkExtension(std::string fileName) {
 void parseConf(std::string fileName) {
     checkExtension(fileName);
     std::ifstream confFile(fileName.c_str());
+    if (!confFile.is_open()) {
+        throw std::runtime_error("Error: Unable to open " + fileName);
+    }
 }
