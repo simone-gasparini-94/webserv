@@ -13,10 +13,10 @@ RESET		= \033[0m
 # Directories
 SRC_DIR		= src
 OBJ_DIR		= obj
-INC_DIR		= includes
+INC_DIR		= inc
 
 # Source files
-SRC_FILES	= $(addsuffix .cpp, main)
+SRC_FILES	= $(addsuffix .cpp, main Server)
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 
 # Object and Dependency files
