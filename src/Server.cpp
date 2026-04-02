@@ -2,7 +2,7 @@
 
 // public ----------------------------------------------------------------------
 
-// setting fd to -1, so the deconstructor ignores uninitialized fds
+// setting fd to -1, so the destructor ignores uninitialized fds
 Server::Server(int port) : _port(port), _serverFd(-1) {
   std::memset(&_address, 0, sizeof(_address));
 }
