@@ -5,6 +5,5 @@
 #include <vector>
 
 void checkExtension(std::string fileName);
-void checkForServerBlock(bool *isServerPresent, std::string line);
 
 #endif
