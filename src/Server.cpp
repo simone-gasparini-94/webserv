@@ -14,7 +14,7 @@ Server::Server(int port) : _port(port), _serverFd(-1) {
 
 Server::~Server() {
   if (_serverFd != -1) {
-    Log(INFO) << "Closing server socket";
+    LOG_INFO << "Closing server socket";
     close(_serverFd);
   }
 }
@@ -44,7 +44,7 @@ void Server::init() {
     throw std::runtime_error("Listen failed");
   }
 
-  Log(INFO) << "Server is listening on port " << _port;
+  LOG_INFO << "Server is listening on port " << _port;
 }
 
 void Server::run() {
@@ -57,10 +57,10 @@ void Server::run() {
     int newSocket =
         accept(_serverFd, (struct sockaddr *)&clientAddr, &clientAddrLen);
     if (newSocket == ERROR) {
-      Log(ERROR) << "Failed to accept connection.";
+      LOG_ERROR << "Failed to accept connection.";
       continue;
     }
-    Log(INFO) << "Connection accepted!";
+    LOG_INFO << "Connection accepted!";
 
     std::memset(buffer, 0, sizeof(buffer));
     int bytesRead = read(newSocket, buffer, sizeof(buffer) - 1);
@@ -72,7 +72,7 @@ void Server::run() {
         "12\r\n\r\nHello World!";
     write(newSocket, httpResponse.c_str(), httpResponse.length());
     close(newSocket);
-    Log(INFO) << "Connection closed!";
+    LOG_INFO << "Connection closed!";
   }
 }
 

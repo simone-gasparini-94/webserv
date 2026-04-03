@@ -2,14 +2,16 @@
 #define LOG_HPP
 
 #include "defines.hpp"
+#include <fstream>
 #include <sstream>
 #include <string>
-#include <fstream>
 
 class Log {
 
 public:
-  Log(status);
+  enum logLevel { DEBUG, ERROR, INFO };
+
+  Log(logLevel);
   ~Log();
 
   static void setLogFile(const std::string &filename);
@@ -20,12 +22,12 @@ public:
   }
 
 private:
-  status _level;
+  logLevel _level;
   std::stringstream _ss;
 
   static std::ofstream _fileStream;
 
-  static void log(status level, const std::string &msg);
+  static void log(logLevel level, const std::string &msg);
 
   // Rest of OFC
   Log();
