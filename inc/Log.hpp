@@ -4,17 +4,15 @@
 #include "defines.hpp"
 #include <sstream>
 #include <string>
-
-#define RESET "\033[0m"
-#define RED "\033[31m"
-#define GREEN "\033[32m"
-#define CYAN "\033[36m"
+#include <fstream>
 
 class Log {
 
 public:
   Log(status);
   ~Log();
+
+  static void setLogFile(const std::string &filename);
 
   template <typename T> Log &operator<<(const T &msg) {
     _ss << msg;
@@ -24,6 +22,8 @@ public:
 private:
   status _level;
   std::stringstream _ss;
+
+  static std::ofstream _fileStream;
 
   static void log(status level, const std::string &msg);
 

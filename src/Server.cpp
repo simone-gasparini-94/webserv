@@ -14,13 +14,15 @@ Server::Server(int port) : _port(port), _serverFd(-1) {
 
 Server::~Server() {
   if (_serverFd != -1) {
-    std::cout << "[INFO] Closing server socket" << std::endl;
+    Log(INFO) << "Closing server socket";
     close(_serverFd);
   }
 }
 
 // methods
 void Server::init() {
+
+  Log::setLogFile("webserv.log");
 
   _serverFd = socket(AF_INET, SOCK_STREAM, 0);
   if (_serverFd == ERROR)
@@ -42,7 +44,7 @@ void Server::init() {
     throw std::runtime_error("Listen failed");
   }
 
-  std::cout << "[INFO] Server is listening on port " << _port << std::endl;
+  Log(INFO) << "Server is listening on port " << _port;
 }
 
 void Server::run() {
@@ -55,10 +57,10 @@ void Server::run() {
     int newSocket =
         accept(_serverFd, (struct sockaddr *)&clientAddr, &clientAddrLen);
     if (newSocket == ERROR) {
-      std::cerr << "[Error] Failed to accept connection." << std::endl;
+      Log(ERROR) << "Failed to accept connection.";
       continue;
     }
-    std::cout << "[INFO] Connection accepted!" << std::endl;
+    Log(INFO) << "Connection accepted!";
 
     std::memset(buffer, 0, sizeof(buffer));
     int bytesRead = read(newSocket, buffer, sizeof(buffer) - 1);
@@ -70,7 +72,7 @@ void Server::run() {
         "12\r\n\r\nHello World!";
     write(newSocket, httpResponse.c_str(), httpResponse.length());
     close(newSocket);
-    std::cout << "[INFO] Connection closed!" << std::endl;
+    Log(INFO) << "Connection closed!";
   }
 }
 
