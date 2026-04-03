@@ -32,17 +32,11 @@ void Server::init() {
   _address.sin_port = htons(_port);
   _address.sin_addr.s_addr = htonl(INADDR_ANY);
 
-  if (bind(_serverFd, (struct sockaddr *)&_address, sizeof(_address)) == ERROR) {
-    close(_serverFd);
-    _serverFd = -1;
+  if (bind(_serverFd, (struct sockaddr *)&_address, sizeof(_address)) == ERROR)
     throw std::runtime_error("Bind failed");
-  }
 
-  if (listen(_serverFd, 10) == ERROR) {
-    close(_serverFd);
-    _serverFd = -1;
+  if (listen(_serverFd, 10) == ERROR)
     throw std::runtime_error("Listen failed");
-  }
 
   LOG_INFO << "Server is listening on port " << _port;
 }
