@@ -5,37 +5,37 @@ Block::Block(enum BlockType BlockType)
 : type(BlockType), root("/") {}
 
 // LOCATION 
-LocationBlock::LocationBlock()
+Location::Location()
 : Block(LOCATION), endpoint("/") {}
 
-void LocationBlock::addChild(Block &block) {
+void Location::addChild(Block &block) {
     (void)block;
 }
 
-void LocationBlock::addListen(size_t port) {
+void Location::addListen(size_t port) {
     (void)port;
 }
 
 // SERVER
-ServerBlock::ServerBlock()
+Server::Server()
 : Block(SERVER), listen(8080) {}
 
-void ServerBlock::addChild(Block &block) {
-    locations.push_back(static_cast<LocationBlock&>(block));
+void Server::addChild(Block &block) {
+    locations.push_back(static_cast<Location&>(block));
 }
 
-void ServerBlock::addListen(size_t port) {
+void Server::addListen(size_t port) {
     this->listen = port;
 }
 
 // MAIN
-MainBlock::MainBlock()
+Main::Main()
 : Block(MAIN) {}
 
-void MainBlock::addChild(Block &block) {
-    server = static_cast<ServerBlock&>(block);
+void Main::addChild(Block &block) {
+    server = static_cast<Server&>(block);
 }
 
-void MainBlock::addListen(size_t port) {
+void Main::addListen(size_t port) {
     (void)port;
 }

@@ -17,7 +17,7 @@ void testParseDirectives(int N, std::string argument, std::string string) {
         except = failure;
     }
     std::ifstream file(argument.c_str());
-    MainBlock main;
+    Main main;
     try {
         parseDirectives(main, file, 0);
         std::cout << N << ": " << pass << std::endl;
@@ -31,7 +31,7 @@ void testEndpoints(int N, std::string argument, std::string *endpoints, size_t l
     std::string failure = std::string("parseDirectives()  -->  ") + RED + "FAIL" + RESET;
     std::string success = std::string("parseDirectives()  -->  ") + GREEN + "SUCCESS" + RESET;
     std::ifstream file(argument.c_str());
-    MainBlock main;
+    Main main;
     try {
         parseDirectives(main, file, 0);
         if (len != main.server.locations.size()) {
@@ -55,7 +55,7 @@ void testListenDirective(int N, std::string argument, size_t port) {
     std::string failure = std::string("parseDirectives()  -->  ") + RED + "FAIL" + RESET;
     std::string success = std::string("parseDirectives()  -->  ") + GREEN + "SUCCESS" + RESET;
     std::ifstream file(argument.c_str());
-    MainBlock main;
+    Main main;
     try {
         parseDirectives(main, file, 0);
         if (main.server.listen == port) {

@@ -22,32 +22,32 @@ public:
     virtual void addListen(size_t port) = 0;
 };
 
-class LocationBlock: public Block {
+class Location: public Block {
 public:
     std::string endpoint;
 
-    LocationBlock();
+    Location();
 
     void addChild(Block &block);
     void addListen(size_t port);
 };
 
-class ServerBlock: public Block {
+class Server: public Block {
 public:
     size_t listen;
-    std::vector<LocationBlock> locations; 
+    std::vector<Location> locations; 
 
-    ServerBlock();
+    Server();
 
     void addChild(Block &block);
     void addListen(size_t port);
 };
 
-class MainBlock: public Block {
+class Main: public Block {
 public:
-    ServerBlock server;
+    Server server;
 
-    MainBlock();
+    Main();
 
     void addChild(Block &block);
     void addListen(size_t port);

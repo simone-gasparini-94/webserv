@@ -56,7 +56,7 @@ void parseDirective(std::string &line, Block &block) {
     }
 }
 
-void storeEndPoint(LocationBlock &location, std::string line) {
+void storeEndPoint(Location &location, std::string line) {
     std::vector<std::string> tokens = split(line);
     if (tokens.size() != 3 || tokens[0] != "location" || tokens[2] != "{") {
         throw std::runtime_error("Error: invalid token");
@@ -73,11 +73,11 @@ void parseDirectives(Block &block, std::ifstream &file, int level) {
             return;
         } else if (isOpening(line)) {
             if (isBlock(line, "server")) {
-                ServerBlock server;
+                Server server;
                 parseDirectives(server, file, level + 1);
                 block.addChild(server);
             } else if (isBlock(line, "location")) {
-                LocationBlock location;
+                Location location;
                 storeEndPoint(location, line);
                 parseDirectives(location, file, level + 1);
                 block.addChild(location);

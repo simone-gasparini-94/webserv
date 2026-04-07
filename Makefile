@@ -16,7 +16,15 @@ OBJ_DIR		= obj
 INC_DIR		= inc
 
 # Source files
-SRC_FILES	= $(addsuffix .cpp, main Server Log)
+SRC_FILES	= $(addsuffix .cpp, main \
+								Server \
+								Log \
+								Block \
+								checkExtension \
+								parseDirectives \
+								parseUtils \
+								readFile \
+				)
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 
 # Object and Dependency files
