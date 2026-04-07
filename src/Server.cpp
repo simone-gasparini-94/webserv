@@ -8,7 +8,9 @@
 // public
 
 Server::Server()
-: Block(SERVER), _port(8080) {}
+: Block(SERVER), _port(8080), _serverFd(-1) {
+  std::memset(&_address, 0, sizeof(_address));
+}
 
 Server::~Server() {
   if (_serverFd != -1) {
