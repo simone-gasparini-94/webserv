@@ -51,7 +51,10 @@ void parseDirective(std::string &line, Block &block) {
         if (block.type != SERVER)
             throw std::runtime_error("Listen directive can be defined only in a server block");
         if (!isNumber(value)) throw std::runtime_error("Listen directive accepts only positive integers as parameter");
-        size_t port = std::atoi(value.c_str());
+        int port = std::atoi(value.c_str());
+        if (port <= 0 || port > 65536) {
+            throw std::runtime_error("Invalid port number");
+        }
         block.addListen(port);   
     }
 }
