@@ -64,24 +64,26 @@ void storeEndPoint(Location &location, std::string line) {
     location.endpoint = tokens[1];
 }
 
-void parseDirectives(Block &block, std::ifstream &file, int level, int &numBraces) {
+void parseDirectives(Block &block, std::ifstream &file, int level, int &numBraces, bool &hasServer) {
     if (level == 3) return;
     if (level != block.type) throw std::runtime_error("Invalid token");
     std::string line;
     while (std::getline(file, line)) {
         if (isClosing(line)) {
             numBraces--;
+            if (numBraces < 0) throw std::runtime_error("Invalid token");
             return;
         } else if (isOpening(line)) {
             numBraces++;
             if (isBlock(line, "server")) {
                 Server server;
-                parseDirectives(server, file, level + 1, numBraces);
+                parseDirectives(server, file, level + 1, numBraces, hasServer);
+                hasServer = true;
                 block.addChild(server);
             } else if (isBlock(line, "location")) {
                 Location location;
                 storeEndPoint(location, line);
-                parseDirectives(location, file, level + 1, numBraces);
+                parseDirectives(location, file, level + 1, numBraces, hasServer);
                 block.addChild(location);
             } else {
                 throw std::runtime_error("Block directive is missing");
@@ -94,6 +96,11 @@ void parseDirectives(Block &block, std::ifstream &file, int level, int &numBrace
 
 void parse(Block &block, std::ifstream &file) {
     int numBraces = 0;
-    parseDirectives(block, file, 0, numBraces);
-    if (numBraces != 0) throw std::runtime_error("Invalid number of curly braces"); 
+    bool hasServer = false;
+    parseDirectives(block, file, 0, numBraces, hasServer);
+    if (numBraces != 0) {
+        throw std::runtime_error("Invalid number of curly braces");
+    } else if (hasServer == false) {
+        throw std::runtime_error("At least 1 server must be defined");
+    }
 }

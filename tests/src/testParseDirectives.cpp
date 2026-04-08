@@ -4,6 +4,29 @@
 #include "parse.hpp"
 #include "Server.hpp"
 
+void testParse(int N, std::string argument, std::string string) {
+    std::string failure = std::string("parse()  -->  ") + RED + "FAIL" + RESET;
+    std::string success = std::string("parse()  -->  ") + GREEN + "SUCCESS" + RESET;
+    std::string pass;
+    std::string except;
+    if (string == "throw") {
+        pass = failure;
+        except = success;
+    } else {
+        pass = success;
+        except = failure;
+    }
+    std::ifstream file(argument.c_str());
+    Main main;
+    try {
+        parse(main, file);
+        std::cout << N << ": " << pass << std::endl;
+    } catch (std::exception &e) {
+        // std::cout << e.what() << std::endl;
+        std::cout << N << ": " << except << std::endl;
+    }
+}
+
 void testParseDirectives(int N, std::string argument, std::string string) {
     std::string failure = std::string("parseDirectives()  -->  ") + RED + "FAIL" + RESET;
     std::string success = std::string("parseDirectives()  -->  ") + GREEN + "SUCCESS" + RESET;
@@ -19,8 +42,9 @@ void testParseDirectives(int N, std::string argument, std::string string) {
     std::ifstream file(argument.c_str());
     Main main;
     int numBraces = 0;
+    bool hasServer = false;
     try {
-        parseDirectives(main, file, 0,numBraces);
+        parseDirectives(main, file, 0, numBraces, hasServer);
         std::cout << N << ": " << pass << std::endl;
     } catch (std::exception &e) {
         // std::cout << e.what() << std::endl;
@@ -34,8 +58,9 @@ void testEndpoints(int N, std::string argument, std::string *endpoints, size_t l
     std::ifstream file(argument.c_str());
     Main main;
     int numBraces = 0;
+    bool hasServer = false;
     try {
-        parseDirectives(main, file, 0, numBraces);
+        parseDirectives(main, file, 0, numBraces, hasServer);
         if (len != main.server.locations.size()) {
             std::cout << N << ": " << failure << std::endl;
             return;
@@ -59,8 +84,9 @@ void testListenDirective(int N, std::string argument, size_t port) {
     std::ifstream file(argument.c_str());
     Main main;
     int numBraces = 0;
+    bool hasServer = false;
     try {
-        parseDirectives(main, file, 0, numBraces);
+        parseDirectives(main, file, 0, numBraces, hasServer);
         if (main.server._port == static_cast<int>(port)) {
             std::cout << N << ": " << success << std::endl;
         } else {
