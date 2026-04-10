@@ -1,7 +1,7 @@
 #include <iostream>
 #include <exception>
 #include "tests.hpp"
-#include "parse.hpp"
+#include "parseConfig.hpp"
 #include "Server.hpp"
 
 int testParse(int N, std::string argument, std::string string) {
@@ -19,7 +19,7 @@ int testParse(int N, std::string argument, std::string string) {
     std::ifstream file(argument.c_str());
     Config main;
     try {
-        parse(main, file);
+        parseConfig(main, file);
         std::cout << N << ": " << pass << std::endl;
         return (string == "throw") ? 1 : 0;
     } catch (std::exception &e) {
