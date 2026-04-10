@@ -20,8 +20,8 @@ Server::~Server() {
 
 // methods
 
-void Server::addChild(Block &block) {
-  locations.push_back(static_cast<Location &>(block));
+void Server::addChild(Location &location) {
+  locations.push_back(location);
 }
 
 void Server::addListen(size_t port) { this->_port = port; }
