@@ -1,4 +1,8 @@
-#include "webserv.hpp"
+#include "Log.hpp"
+#include "Server.hpp"
+#include "defines.hpp"
+#include "parse.hpp"
+#include "signal.hpp"
 #include <iostream>
 
 int main(int argc, char *argv[]) {
