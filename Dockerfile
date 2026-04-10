@@ -9,3 +9,5 @@ COPY . .
 RUN make
 
 ENTRYPOINT ["./webserv"]
+
+CMD ["conf-files/webserv.conf"]
