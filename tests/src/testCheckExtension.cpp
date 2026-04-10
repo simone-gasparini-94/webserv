@@ -18,7 +18,9 @@ void testCheckExtension(int N, std::string argument, std::string string) {
     try {
         checkExtension(argument);
         std::cout << N << ": " << pass << std::endl;
+        return (string == "throw") ? 1 : 0;
     } catch (std::exception &e) {
         std::cout << N << ": " << except << std::endl;
+        return (string == "throw") ? 0 : 1;
     }
 }

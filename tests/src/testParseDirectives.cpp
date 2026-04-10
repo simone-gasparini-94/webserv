@@ -4,7 +4,7 @@
 #include "parse.hpp"
 #include "Server.hpp"
 
-void testParseDirectives(int N, std::string argument, std::string string) {
+int testParseDirectives(int N, std::string argument, std::string string) {
     std::string failure = std::string("parseDirectives()  -->  ") + RED + "FAIL" + RESET;
     std::string success = std::string("parseDirectives()  -->  ") + GREEN + "SUCCESS" + RESET;
     std::string pass;
@@ -21,9 +21,11 @@ void testParseDirectives(int N, std::string argument, std::string string) {
     try {
         parseDirectives(main, file, 0);
         std::cout << N << ": " << pass << std::endl;
+        return (string == "throw") ? 1 : 0;
     } catch (std::exception &e) {
         // std::cout << e.what() << std::endl;
         std::cout << N << ": " << except << std::endl;
+        return (string == "throw") ? 0 : 1;
     }
 }
 
