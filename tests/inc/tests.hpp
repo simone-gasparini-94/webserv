@@ -10,6 +10,7 @@
 
 void testCheckExtension(int N, std::string argument, std::string string);
 void testReadFile(int N, std::string argument, std::string string);
+void testParse(int N, std::string argument, std::string string);
 void testParseDirectives(int N, std::string argument, std::string string);
 void testEndpoints(int N, std::string argument, std::string *endpoints, size_t len);
 void testListenDirective(int N, std::string argument, size_t port);
