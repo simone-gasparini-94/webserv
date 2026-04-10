@@ -31,7 +31,8 @@ jobs:
     - name: Run Integration Test
       run: |
         # create dummy config
-        touch default.conf
+        echo "server {
+        }" > default.conf
 
         # start server
         ./webserv default.conf & SERVER_PID=$!
