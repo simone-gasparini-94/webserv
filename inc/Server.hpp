@@ -23,9 +23,6 @@ public:
 
     Block(enum BlockType type);
     virtual ~Block() {}
-
-    virtual void addChild(Block &block) = 0;
-    virtual void addListen(size_t port) = 0;
 };
 
 class Location: public Block {
@@ -33,9 +30,6 @@ public:
     std::string endpoint;
 
     Location();
-
-    void addChild(Block &block);
-    void addListen(size_t port);
 };
 
 class Server: public Block {
@@ -49,7 +43,7 @@ public:
     ~Server();
 
     void init();
-    void addChild(Block &block);
+    void addChild(Location &location);
     void addListen(size_t port);
 };
 
@@ -63,8 +57,7 @@ public:
     void handleNewConnections();
     void handleClientData(int i);
     void run();
-    void addChild(Block &block);
-    void addListen(size_t port);
+    void addChild(Server &server);
 
 private:
     int _epollFd;

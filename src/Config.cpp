@@ -14,9 +14,7 @@ Config::~Config() {
   }
 }
 
-void Config::addChild(Block &block) { server = static_cast<Server &>(block); }
-
-void Config::addListen(size_t port) { (void)port; }
+void Config::addChild(Server &server) { this->server = server; }
 
 void Config::run() {
   int event_count;

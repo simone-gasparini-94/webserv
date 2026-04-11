@@ -55,7 +55,8 @@ void parseDirective(std::string &line, Block &block) {
         if (port <= 0 || port > 65536) {
             throw std::runtime_error("Invalid port number");
         }
-        block.addListen(port);
+        Server &server = static_cast<Server &>(block);
+        server.addListen(port);
     }
 }
 
@@ -82,12 +83,14 @@ void parseDirectives(Block &block, std::ifstream &file, int level, int &numBrace
                 Server server;
                 parseDirectives(server, file, level + 1, numBraces, hasServer);
                 hasServer = true;
-                block.addChild(server);
+                Config &config = static_cast<Config &>(block);
+                config.addChild(server);
             } else if (isBlock(line, "location")) {
                 Location location;
                 storeEndPoint(location, line);
                 parseDirectives(location, file, level + 1, numBraces, hasServer);
-                block.addChild(location);
+                Server &server = static_cast<Server &>(block);
+                server.addChild(location);
             } else {
                 throw std::runtime_error("Block directive is missing");
             }
