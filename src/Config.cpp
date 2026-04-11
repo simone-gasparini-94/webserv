@@ -2,6 +2,7 @@
 #include "Server.hpp"
 #include "defines.hpp"
 #include "signal.hpp"
+#include <cerrno>
 #include <fcntl.h>
 #include <sys/epoll.h>
 #include <unistd.h>
@@ -15,25 +16,32 @@ Config::~Config() {
   }
 }
 
-void Config::addChild(Block &block) { server = static_cast<Server &>(block); }
-
-void Config::addListen(size_t port) { (void)port; }
+void Config::addChild(Server &server) { this->server = server; }
 
 void Config::run() {
   int event_count;
 
   _epollFd = epoll_create(1);
-  if (_epollFd == ERROR)
+  if (_epollFd == ERROR) {
+    if (errno == EINTR)
+      return;
     throw std::runtime_error("epoll_create() failed");
+  }
   _event.events = EPOLLIN;
   _event.data.fd = server._serverFd;
-  if (epoll_ctl(_epollFd, EPOLL_CTL_ADD, server._serverFd, &_event) == ERROR)
+  if (epoll_ctl(_epollFd, EPOLL_CTL_ADD, server._serverFd, &_event) == ERROR) {
+    if (errno == EINTR)
+      return;
     throw std::runtime_error("epoll_ctl() failed");
+  }
   // Event-Loop
   while (SignalState::serverRunning) {
     event_count = epoll_wait(_epollFd, _events, MAX_EVENTS, -1);
-    if (event_count == ERROR)
+    if (event_count == ERROR) {
+      if (errno == EINTR)
+        return;
       throw std::runtime_error("epoll_wait() failed");
+    }
     for (int i = 0; i < event_count; i++) {
       if (_events[i].data.fd == server._serverFd)
         handleNewConnections();
@@ -41,8 +49,6 @@ void Config::run() {
         handleClientData(i);
     }
   }
-  close(_epollFd);
-  close(server._serverFd);
 }
 
 void Config::handleNewConnections() {

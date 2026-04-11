@@ -1,0 +1,11 @@
+assets/
+.github/
+.git/
+obj/
+.gitignore
+README.md
+tests/build/
+tests/tester
+.cache/
+webserv.log
+compile_commands.json

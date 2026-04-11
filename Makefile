@@ -23,8 +23,8 @@ SRC_FILES	= $(addsuffix .cpp, main \
 								Location \
 								Log \
 								checkExtension \
-								parseDirectives \
-								parseUtils \
+								parseConfig \
+								parseConfigUtils \
 								readFile \
 								signal \
 				)

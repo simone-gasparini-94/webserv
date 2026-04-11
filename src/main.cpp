@@ -1,7 +1,7 @@
 #include "Log.hpp"
 #include "Server.hpp"
 #include "defines.hpp"
-#include "parse.hpp"
+#include "parseConfig.hpp"
 #include "signal.hpp"
 #include <iostream>
 
@@ -17,14 +17,12 @@ int main(int argc, char *argv[]) {
   try {
     checkExtension(fileName);
     readFile(configFile, fileName);
-    parse(main, configFile);
+    parseConfig(main, configFile);
     main.server.init();
     main.run();
   } catch (const std::exception &e) {
-    if (SignalState::serverRunning == 1) {
-      LOG_ERROR << e.what();
-      return FAILURE;
-    }
+    LOG_ERROR << e.what();
+    return FAILURE;
   }
   return SUCCESS;
 }
