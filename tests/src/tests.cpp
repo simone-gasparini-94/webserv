@@ -56,7 +56,9 @@ int main() {
 
     // getContentLength()
     failures += testGetContentLength(1, "Content-Length: 0", 0);
-
+    failures += testGetContentLength(2, "random", 0);
+    failures += testGetContentLength(3, "Content-Lengt: 0", 0);
+    failures += testGetContentLength(4, "Content-Length: 42", 42);
 
     if (failures > 0)
       return FAILURE;
