@@ -53,6 +53,11 @@ int main() {
     failures += testParse(2, "conf-files/test19.conf", "throw");
     failures += testParse(3, "conf-files/test20.conf", "throw");
     failures += testParse(4, "conf-files/test21.conf", "throw");
+
+    // getContentLength()
+    failures += testGetContentLength(1, "Content-Length: 0", 0);
+
+
     if (failures > 0)
       return FAILURE;
     else

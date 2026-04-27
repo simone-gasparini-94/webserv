@@ -27,6 +27,7 @@ SRC_FILES	= $(addsuffix .cpp, main \
 								parseConfigUtils \
 								readFile \
 								signal \
+								readRequest \
 				)
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 

@@ -7,7 +7,8 @@ OBJ_DIR     =   build
 TEST_SRCS   =   tests.cpp \
                 testCheckExtension.cpp \
                 testParseDirectives.cpp \
-				testReadFile.cpp
+				testReadFile.cpp \
+				testReadRequest.cpp
 
 DEP_SRCS    =   checkExtension.cpp \
                 parseConfig.cpp \
@@ -18,7 +19,9 @@ DEP_SRCS    =   checkExtension.cpp \
 				Server.cpp \
 				Location.cpp \
 				Log.cpp \
-				signal.cpp
+				signal.cpp \
+				readRequest.cpp \
+				Http.cpp
 
 TEST_OBJS   =   $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(TEST_SRCS))
 DEP_OBJS    =   $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(DEP_SRCS))

@@ -14,5 +14,6 @@ int testParse(int N, std::string argument, std::string string);
 int testParseDirectives(int N, std::string argument, std::string string);
 int testEndpoints(int N, std::string argument, std::string *endpoints, size_t len);
 int testListenDirective(int N, std::string argument, size_t port);
+int testGetContentLength(int N, std::string argument, size_t result);
 
 #endif
