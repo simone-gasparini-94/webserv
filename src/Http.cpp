@@ -8,13 +8,15 @@ HttpRequest::HttpRequest(std::string str) {
     int i = 0;
     while (std::getline(stream, line)) {
         if (i == 0) {
-            method = parseMethod(line);
-            version = parseVersion(line);
+            std::vector<std::string> words = parseContent(line);
+            method = words[0];
+            version = words[2];
         } else if (line.find("Content-Type: ") != std::string::npos) {
-            contentType = parseContent(line);
+            std::vector<std::string> words = parseContent(line);
+            contentType = words[1];
         } else if (line.find("Content-Length: ") != std::string::npos) {
-            std::string str = parseContent(line);
-            std::istringstream(str) >> contentLength;
+            std::vector<std::string> words = parseContent(line);
+            std::istringstream(words[1]) >> contentLength;
         } else if (line.find("\r") == 0) {
             body = parseBody(stream);
         }
@@ -22,30 +24,11 @@ HttpRequest::HttpRequest(std::string str) {
     }
 }
 
-std::string parseMethod(std::string &line) {
-    std::istringstream stream(line);
-    std::string method;
-    std::string slash;
-    std::string version;
-    stream >> method >> slash >> version;
-    return method;
-}
-
-std::string parseVersion(std::string &line) {
-    std::istringstream stream(line);
-    std::string method;
-    std::string slash;
-    std::string version;
-    stream >> method >> slash >> version;
-    return version;
-}
-
-std::string parseContent(std::string &line) {
+std::vector<std::string> parseContent(std::string &line) {
     std::istringstream linestream(line);
-    std::string text;
-    std::string content;
-    linestream >> text >> content;
-    return content;
+    std::vector<std::string> words(3);
+    linestream >> words[0] >> words[1] >> words[2];
+    return words;
 }
 
 std::string parseBody(std::istringstream &stream) {

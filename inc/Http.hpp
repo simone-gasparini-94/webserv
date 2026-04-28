@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <iostream>
 #include <sstream>
+#include <vector>
 
 class HttpRequest {
 public:
@@ -16,9 +17,7 @@ public:
     HttpRequest(std::string rawString);
 };
 
-std::string parseMethod(std::string &line);
-std::string parseVersion(std::string &line);
-std::string parseContent(std::string &line);
+std::vector<std::string> parseContent(std::string &line);
 std::string parseBody(std::istringstream &stream);
 
 #endif
