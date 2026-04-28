@@ -96,8 +96,9 @@ int main() {
     request.method = "POST";
     request.version = "HTTP/1.1";
     request.contentType = "application/json";
+    request.body = "hello stranger";
+    request.contentLength = 14;
     failures += testParseRequest(3, str3, request);
-
     if (failures > 0)
       return FAILURE;
     else
