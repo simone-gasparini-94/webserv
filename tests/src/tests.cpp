@@ -75,7 +75,7 @@ int main() {
     request.contentType = "";
     request.contentLength = 0;
     request.body = "";
-    failures += testParseRequest(1, str, request);
+    failures += testHttp(1, str, request);
     request.method = "POST";
     std::string str2 = "POST / HTTP/1.1\r\n"
                       "User-Agent: PostmanRuntime/7.53.0\r\n"
@@ -85,7 +85,7 @@ int main() {
                       "Accept-Encoding: gzip, deflate, br\r\n"
                       "Connection: keep-alive\r\n"
                       "\r\n";
-    failures += testParseRequest(2, str2, request);
+    failures += testHttp(2, str2, request);
     std::string str3 =  "POST / HTTP/1.1\r\n"
                         "Content-Type: application/json\r\n"
                         "User-Agent: PostmanRuntime/7.53.0\r\n"
@@ -98,7 +98,7 @@ int main() {
     request.contentType = "application/json";
     request.body = "hello stranger";
     request.contentLength = 14;
-    failures += testParseRequest(3, str3, request);
+    failures += testHttp(3, str3, request);
     if (failures > 0)
       return FAILURE;
     else

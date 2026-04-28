@@ -9,7 +9,7 @@ TEST_SRCS   =   tests.cpp \
                 testParseDirectives.cpp \
 				testReadFile.cpp \
 				testReadRequest.cpp \
-				testParseRequest.cpp
+				testHttp.cpp
 
 DEP_SRCS    =   checkExtension.cpp \
                 parseConfig.cpp \
@@ -22,7 +22,6 @@ DEP_SRCS    =   checkExtension.cpp \
 				Log.cpp \
 				signal.cpp \
 				readRequest.cpp \
-				parseRequest.cpp \
 				Http.cpp
 
 TEST_OBJS   =   $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(TEST_SRCS))
