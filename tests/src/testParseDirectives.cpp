@@ -63,19 +63,25 @@ int testEndpoints(int N, std::string argument, std::string *endpoints, size_t le
     bool hasServer = false;
     try {
         parseDirectives(main, file, 0, numBraces, hasServer);
-        if (len != main.server.locations.size()) {
+        if (main._servers.empty()) {
             std::cout << N << ": " << failure << std::endl;
             return FAILURE;
         }
-        for (size_t i = 0; i < len; i++) {
-            if (endpoints[i] != main.server.locations[i].endpoint) {
+
+        for (size_t i = 0; i < main._servers.size(); ++i) {
+            if (main._servers[i].locations.size() != len) {
                 std::cout << N << ": " << failure << std::endl;
                 return FAILURE;
             }
+            for (size_t j = 0; j < len; j++) {
+                if (endpoints[j] != main._servers[i].locations[j].endpoint) {
+                    std::cout << N << ": " << failure << std::endl;
+                    return FAILURE;
+                }
+             }
         }
         std::cout << N << ": " << success << std::endl;
     } catch (std::exception &e) {
-        // std::cout << e.what() << std::endl;
         std::cout << N << ": " << failure << std::endl;
         return FAILURE;
     }
@@ -91,10 +97,26 @@ int testListenDirective(int N, std::string argument, size_t port) {
     bool hasServer = false;
     try {
         parseDirectives(main, file, 0, numBraces, hasServer);
-        if (main.server._port == static_cast<int>(port)) {
-            std::cout << N << ": " << success << std::endl;
+
+        if (main._servers.empty()) {
+            std::cout << N << ": " << FAILURE << std::endl;
+            return FAILURE;
+        }
+
+        bool foundPort = false;
+        for (size_t i = 0; i < main._servers.size(); ++i) {
+            for (size_t j = 0; j < main._servers[i]._port.size(); ++j) {
+                if (main._servers[i]._port[j] == static_cast<int>(port)) {
+                    foundPort = true;
+                    break;
+                }
+            }
+            if (foundPort) break;
+        }
+        if (foundPort)  {
+            std::cout << N << ": " << SUCCESS << std::endl;
         } else {
-            std::cout << N << ": " << failure << std::endl;
+            std::cout << N << ": " << FAILURE << std::endl;
             return FAILURE;
         }
     } catch (std::exception &e) {
