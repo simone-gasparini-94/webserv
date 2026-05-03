@@ -8,7 +8,14 @@
 
 // public
 
-Server::Server() : Block(SERVER) {}
+Server::Server() : Block(SERVER) {
+  this->_port.push_back(8080);
+
+  struct sockaddr_in addr;
+  std::memset(&addr, 0, sizeof(addr));
+  this->_addr.push_back(addr);
+  this->_serverFd.push_back(-1);
+}
 
 Server::Server(const Server &other) : Block(other) { *this = other; }
 

@@ -99,7 +99,7 @@ int testListenDirective(int N, std::string argument, size_t port) {
         parseDirectives(main, file, 0, numBraces, hasServer);
 
         if (main._servers.empty()) {
-            std::cout << N << ": " << FAILURE << std::endl;
+            std::cout << N << ": " << failure << std::endl;
             return FAILURE;
         }
 
@@ -113,10 +113,10 @@ int testListenDirective(int N, std::string argument, size_t port) {
             }
             if (foundPort) break;
         }
-        if (foundPort)  {
-            std::cout << N << ": " << SUCCESS << std::endl;
+        if (foundPort) {
+            std::cout << N << ": " << success << std::endl;
         } else {
-            std::cout << N << ": " << FAILURE << std::endl;
+            std::cout << N << ": " << failure << std::endl;
             return FAILURE;
         }
     } catch (std::exception &e) {
