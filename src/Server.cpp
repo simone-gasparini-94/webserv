@@ -10,7 +10,7 @@
 
 Server::Server() : Block(SERVER) {}
 
-Server::Server(const Server &other) { *this = other; }
+Server::Server(const Server &other) : Block(other) { *this = other; }
 
 Server &Server::operator=(const Server &other) {
   if (this != &other) {
