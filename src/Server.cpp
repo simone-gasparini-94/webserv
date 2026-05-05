@@ -17,32 +17,6 @@ Server::Server() : Block(SERVER) {
   this->_serverFd.push_back(-1);
 }
 
-Server::Server(const Server &other) : Block(other) { *this = other; }
-
-Server &Server::operator=(const Server &other) {
-  if (this != &other) {
-    Block::operator=(other);
-
-    // close currently owned Fds
-    for (size_t i = 0; i < this->_serverFd.size(); ++i) {
-      if (this->_serverFd[i] != -1) {
-        close(this->_serverFd[i]);
-      }
-    }
-
-    this->_port = other._port;
-    this->_addr = other._addr;
-    this->locations = other.locations;
-
-    // We keep the Fd-Vector with -1, to prevent ownership conflicts
-    this->_serverFd.clear();
-    for (size_t i = 0; i < other._port.size(); ++i) {
-      this->_serverFd.push_back(-1);
-    }
-  }
-  return *this;
-}
-
 Server::~Server() {
   for (size_t i = 0; i < _serverFd.size(); ++i) {
     if (_serverFd[i] != -1) {
@@ -58,12 +32,16 @@ Server::~Server() {
 void Server::addChild(Location &location) { locations.push_back(location); }
 
 void Server::addListen(size_t port) {
-  this->_port.push_back(port);
+  if (_port.size() == 1) {
+    this->_port[0] = port;
+  } else {
+    this->_port.push_back(port);
 
-  struct sockaddr_in addr;
-  std::memset(&addr, 0, sizeof(addr));
-  this->_addr.push_back(addr);
-  this->_serverFd.push_back(-1);
+    struct sockaddr_in addr;
+    std::memset(&addr, 0, sizeof(addr));
+    this->_addr.push_back(addr);
+    this->_serverFd.push_back(-1);
+  }
 }
 
 void Server::init() {

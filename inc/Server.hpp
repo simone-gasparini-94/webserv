@@ -23,9 +23,6 @@ public:
 
     Block(enum BlockType type);
     virtual ~Block() {}
-
-protected:
-    Block();
 };
 
 class Location: public Block {
@@ -43,8 +40,6 @@ public:
     std::vector<Location> locations;
 
     Server();
-    Server(const Server &);
-    Server& operator=(const Server &);
     ~Server();
 
     void init();
