@@ -19,6 +19,5 @@ public:
 
 std::vector<std::string> parseContent(std::string &line);
 std::string parseBody(std::istringstream &stream);
-bool isHeaderField(std::string headerFile, std::string line);
 
 #endif
