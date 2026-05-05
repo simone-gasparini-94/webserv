@@ -34,9 +34,9 @@ public:
 
 class Server: public Block {
 public:
-    int _port;
-    int _serverFd;
-    struct sockaddr_in _address;
+    std::vector<int> _port;
+    std::vector<int> _serverFd;
+    std::vector<struct sockaddr_in> _addr;
     std::vector<Location> locations;
 
     Server();
@@ -49,15 +49,17 @@ public:
 
 class Config: public Block {
 public:
-    Server server;
+    std::vector<Server> _servers;
 
     Config();
     ~Config();
 
-    void handleNewConnections();
-    void handleClientData(int i);
-    void run();
     void addChild(Server &server);
+    int init();
+    void run();
+    int isServerFd(int triggeredFd);
+    void handleNewConnections(int triggeredFd);
+    void handleClientData(int i);
 
 private:
     int _epollFd;
