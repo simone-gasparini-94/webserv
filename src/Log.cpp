@@ -18,7 +18,7 @@ Log::~Log() {
 void Log::setLogFile(const std::string &filename) {
   if (_fileStream.is_open())
     _fileStream.close();
-  _fileStream.open(filename.c_str(), std::ios::app);
+  _fileStream.open(filename.c_str(), std::ios::trunc);
   if (!_fileStream.is_open())
     throw std::runtime_error("Could not open log file");
 }
