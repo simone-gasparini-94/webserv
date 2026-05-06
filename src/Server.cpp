@@ -8,7 +8,7 @@
 
 // public
 
-Server::Server() : Block(SERVER) {
+Server::Server() : Block(SERVER){
   /*
   this->_port.push_back(8080);
 

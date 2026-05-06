@@ -20,6 +20,7 @@ public:
     bool handleData();
     void validateRequest();
     void generateResponse();
+    bool isMethodAllowed();
 };
 
 #endif

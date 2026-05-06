@@ -55,3 +55,7 @@ void Client::generateResponse() {
     ss << response.body;
     response.response = ss.str();
 }
+
+bool Client::isMethodAllowed() {
+    return server->allowedMethods.find(request.method) != server->allowedMethods.end();
+}
