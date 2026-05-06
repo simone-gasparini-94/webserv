@@ -47,6 +47,8 @@ void parseDirective(std::string &line, Block &block) {
     std::string value = removeSemicolon(tokens[1]);
     if (tokens[0] == "root") {
         block.root = value;
+    } else if (tokens[0] == "index") {
+        block.index = value;
     } else if (tokens[0] == "listen") {
         if (block.type != SERVER)
             throw std::runtime_error("Listen directive can be defined only in a server block");

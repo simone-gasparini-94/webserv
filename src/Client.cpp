@@ -7,7 +7,7 @@
 
 Client::Client() : server(NULL) {}
 
-Client::Client(Server &s, int clientFd) : server(&s), fd(clientFd) {}
+Client::Client(Server &s, int clientFd) : server(&s), locationIndex(-1), fd(clientFd) {}
 
 bool Client::handleData() {
   std::string requestString = readRequest(fd);
@@ -26,7 +26,7 @@ void Client::validateRequest() {
         response.status = "400";
     } else if (isMethodAllowed() == false) {
         response.status = "405";
-    } else if (request.endpoint == "/") {
+    } else if ((locationIndex = isEndpoint()) != -1) {
         response.status = "200";
     } else {
         response.status = "404";
@@ -38,11 +38,16 @@ void Client::generateResponse() {
     ss << response.version << " " << response.status << " " << response.statuses[response.status] << "\r\n";
     ss << "Server: " << response.server;
     std::string fileName;
-    if (request.endpoint == "/") {
-        fileName = server->root + "index" + ".html";
+    if (response.status >= "400") {
+        fileName = server->root + "/" + response.status + ".html";
+    } else if (locationIndex != -1) {
+        std::cout << "location index: " << locationIndex << std::endl;
+        Location location = server->locations[locationIndex];
+        fileName = location.root + "/" + location.index;
     } else {
-        fileName = server->root + response.status + ".html";
+        fileName = server->root + "/" + server->index;
     }
+    std::cout << fileName << std::endl;
     std::ifstream file(fileName.c_str());
     if (file) {
         response.body.assign((std::istreambuf_iterator<char>(file)),
@@ -58,4 +63,11 @@ void Client::generateResponse() {
 
 bool Client::isMethodAllowed() {
     return server->allowedMethods.find(request.method) != server->allowedMethods.end();
+}
+
+int Client::isEndpoint() {
+    for (size_t i = 0; i < server->locations.size(); i++) {
+        if (request.endpoint == server->locations[i].endpoint) return i;
+    }
+    return -1;
 }

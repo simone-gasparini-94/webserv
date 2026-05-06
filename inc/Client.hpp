@@ -7,12 +7,11 @@
 class Server;
 
 class Client {
-
 public:
     HttpRequest request;
     HttpResponse response;
     Server *server;
-
+    int locationIndex;
     int fd;
 
     Client();
@@ -21,6 +20,7 @@ public:
     void validateRequest();
     void generateResponse();
     bool isMethodAllowed();
+    int isEndpoint();
 };
 
 #endif
