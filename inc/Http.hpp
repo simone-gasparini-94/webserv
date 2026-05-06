@@ -10,6 +10,7 @@
 class HttpRequest {
 public:
     std::string method;
+    std::string endpoint;
     std::string version;
     std::string contentType;
     std::size_t contentLength;

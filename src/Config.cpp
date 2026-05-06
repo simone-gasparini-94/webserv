@@ -118,11 +118,11 @@ void Config::handleNewConnections(int serverFd) {
 
 void Config::handleClientData(int clientFd) {
   std::string requestString = readRequest(clientFd);
+  std::cout << requestString << std::endl;
   HttpRequest request(requestString);
   HttpResponse response;
   if (request.version != response.version) response.generateResponse("400");
   else response.generateResponse("200");
-  std::cout << response.response << std::endl;
   write(clientFd, response.response.c_str(), response.response.size());
   LOG_INFO << "Disconnecting client FD: " << clientFd;
   close(clientFd);
