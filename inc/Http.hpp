@@ -22,8 +22,11 @@ public:
 class HttpResponse {
 public:
     std::map<std::string, std::string> statuses;
-    std::string response;
     std::string version;
+    std::string server;
+    std::string emptyLine;
+    std::string response;
+    std::ostringstream body;
 
     HttpResponse();
 

@@ -1,6 +1,8 @@
 #include "Http.hpp"
+#include <fstream>
+#include <sstream>
 
-HttpResponse::HttpResponse(): version("HTTP/1.1") {
+HttpResponse::HttpResponse(): version("HTTP/1.1"), server("webserv\r\n"), emptyLine("\r\n") {
     statuses["200"] = "OK";
     statuses["400"] = "BAD REQUEST";
     statuses["404"] = "NOT FOUND";
@@ -8,5 +10,15 @@ HttpResponse::HttpResponse(): version("HTTP/1.1") {
 }
 
 void HttpResponse::generateResponse(std::string status) {
-    response = version + " " + status + " " + statuses[status] + "\r\n";
+    std::ostringstream ss;
+    ss << version << " " << status << " " << statuses[status] << "\r\n";
+    ss << server;
+    ss << "Content-Type: " << "text/html" << "\r\n";
+    std::string fileName = std::string("www/") + status + ".html";
+    std::ifstream file(fileName.c_str());
+    body << file.rdbuf();
+    ss << "Content-Length: " << body.str().size() << "\r\n";
+    ss << emptyLine;
+    ss << body;
+    response = ss.str();
 }
