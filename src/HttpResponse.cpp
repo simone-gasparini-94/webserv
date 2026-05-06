@@ -13,7 +13,6 @@ void HttpResponse::generate(HttpRequest &request) {
     if (request.version != version) {
         status = "400";
         generateHtml(request);
-        return;
     } else if (request.endpoint == "/") {
         status = "200";
         generateHtml(request);
@@ -30,7 +29,7 @@ void HttpResponse::generateHtml(HttpRequest &request) {
     if (request.endpoint == "/") {
         fileName = std::string("www/") + "index" + ".html";
     } else {
-        fileName = std::string("www/") + request.endpoint + ".html";
+        fileName = std::string("www/") + status + ".html";
     }
     ss << "Content-Type: " << "text/html" << "\r\n";
     std::ifstream file(fileName.c_str());
