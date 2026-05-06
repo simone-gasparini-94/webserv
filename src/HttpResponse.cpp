@@ -12,13 +12,13 @@ HttpResponse::HttpResponse(): version("HTTP/1.1"), server("webserv\r\n"), emptyL
 void HttpResponse::generateResponse(std::string status) {
     std::ostringstream ss;
     ss << version << " " << status << " " << statuses[status] << "\r\n";
-    ss << server;
+    ss << "Server: " << server;
     ss << "Content-Type: " << "text/html" << "\r\n";
     std::string fileName = std::string("www/") + status + ".html";
     std::ifstream file(fileName.c_str());
     body << file.rdbuf();
     ss << "Content-Length: " << body.str().size() << "\r\n";
     ss << emptyLine;
-    ss << body;
+    ss << body.str();
     response = ss.str();
 }
