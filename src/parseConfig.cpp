@@ -92,7 +92,9 @@ void parseDirective(std::string &line, Block &block) {
             throw std::runtime_error("Redirect directive can be defined only in a location block");
         Location &location = static_cast<Location &>(block);
         location.redirect = tokens[1];
-    } 
+    } else {
+      throw std::runtime_error("Invalid directive");
+    }
 }
 
 std::string parseSingleValue(std::vector<std::string> tokens) {
