@@ -7,33 +7,37 @@ void Config::run() {
   int event_count;
 
   while (SignalState::serverRunning) {
-    event_count = epoll_wait(epollFd, events, MAX_EVENTS, 1000);
-    if (event_count == ERROR) {
-      if (errno == EINTR)
-        return;
-      throw std::runtime_error("epoll_wait() failed");
-    }
-
-    checkTimeouts();
-    for (int i = 0; i < event_count; ++i) {
-      int fd = events[i].data.fd;
-      uint32_t event_types = events[i].events;
-
-      if (event_types & EPOLLERR) {
-        handleEpollError(fd);
-        continue;
+    try {
+      event_count = epoll_wait(epollFd, events, MAX_EVENTS, 1000);
+      if (event_count == ERROR) {
+        if (errno == EINTR)
+          return;
+        throw std::runtime_error("epoll_wait() failed");
       }
 
-      int serverIndex = isServerFd(fd);
-      if (serverIndex != -1) {
-        handleNewConnections(fd, serverIndex);
-      } else if (readPipes.count(fd)) {
-        handleCgiRead(fd);
-      } else if (writePipes.count(fd)) {
-        handleCgiWrite(fd);
-      } else if (clients.count(fd)) {
-        handleClient(fd);
+      checkTimeouts();
+      for (int i = 0; i < event_count; ++i) {
+        int fd = events[i].data.fd;
+        uint32_t event_types = events[i].events;
+
+        if (event_types & EPOLLERR) {
+          handleEpollError(fd);
+          continue;
+        }
+
+        int serverIndex = isServerFd(fd);
+        if (serverIndex != -1) {
+          handleNewConnections(fd, serverIndex);
+        } else if (readPipes.count(fd)) {
+          handleCgiRead(fd);
+        } else if (writePipes.count(fd)) {
+          handleCgiWrite(fd);
+        } else if (clients.count(fd)) {
+          handleClient(fd);
+        }
       }
+    } catch (const std::exception &e) {
+      LOG_ERROR << e.what();
     }
   }
 }
