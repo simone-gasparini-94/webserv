@@ -322,6 +322,7 @@ This will run the program with `conf-files/webserv.conf` as argument.
 ## Resources
 
 [Nginx Documentation](https://nginx.org/en/docs/)
+
 [MDN HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP)
 
 ### AI Usage
