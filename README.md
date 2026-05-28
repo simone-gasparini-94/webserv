@@ -16,9 +16,9 @@
 
 HTTP web server built from scratch in C++98.
 
-It handles multiple connections using `epoll`.
+It handles multiple connections using `epoll`, which is Linux-only system call. In order to work on other operating systems, the program is containerized with Docker.
 
-`epoll` is a Linux-only system call, which means that it won't work on other operating systems. For this reason the program is containerized with Docker.
+The server accepts only `GET`, `POST`, and `POST` requests and it can be used for serving static files and for handling CGI.
 
 ## Configuration file
 
