@@ -1,4 +1,4 @@
-*This project has been created as part of the 42 curriculum by sgavrilo, and sgaspari*
+*This project has been created as part of the 42 curriculum in collaboration with [Sergej Gavrilov](https://github.com/Kopfdreher)*
 
 # webserv
 
